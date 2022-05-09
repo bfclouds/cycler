@@ -10,9 +10,15 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
+    "resolveJsonModule": true,
+    // "noImplicitAny": false,
     "baseUrl": ".",
     "types": [
       "webpack-env"
+    ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
     ],
     "paths": {
       "@/*": [
@@ -35,5 +41,5 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
 }

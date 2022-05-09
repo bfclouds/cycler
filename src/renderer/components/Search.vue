@@ -7,44 +7,30 @@
       id="search"
       class="main-input"
       :value="searchValue"
-      @input="changeInput"
-      placeholder="嘿，输入点啥~">
+      placeholder="嘿，输入点啥~"
+    >
       <template #suffix>
-        <div class="suffix-tool">
-          logo
-        </div>
+        <div class="suffix-tool">logo</div>
       </template>
     </a-input>
   </div>
 </template>
 
 <script lang="ts">
-import { CurrentPluginType, CInputEvent } from '@/type'
-import { defineComponent, PropType } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   props: {
     currentPlugin: {
-      type: Object as PropType<CurrentPluginType>
+      type: Object,
     },
     searchValue: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
-  setup(props) {
-    console.log(props);
-
-    function changeInput(event: CInputEvent) {
-      console.log(event.target.value);
-    }
-
-    return {
-      changeInput
-    }
-  }
+  emits: ['onSearch']
 })
-
 </script>
 
 <style lang="less">
