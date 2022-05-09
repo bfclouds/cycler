@@ -1,67 +1,43 @@
-import electron, {
-  BrowserWindow,
-  app
-} from 'electron';
-import { main } from './browsers';
+import { main } from './browser'
+import { app } from 'electron'
 
 class App {
-  private windowCreator: { init: () => void; getWindow: () => BrowserWindow };
-
+  private windowCreator: { init: () => void, getMainWindow: () => void }
   constructor() {
     this.windowCreator = main();
-    const gotTheLock = app.requestSingleInstanceLock();
-
-    if (!gotTheLock) {
-      app.quit();
+    const lock = app.requestSingleInstanceLock()
+    if (!lock) {
+      app.quit()
     } else {
-      // this.systemPlugins = registerySystemPlugin();// 读取所有插件
-      this.beforeReady();
-      this.onReady();
-      this.onRunning();
-      this.onQuit();
+      this.beforeReady()
+      this.onReady()
+      this.onQuit()
     }
-  }
-
-  createWindow() {
-    this.windowCreator.init();
   }
 
   beforeReady() {
-    // 系统托盘
-    // if (commonConst.macOS()) {
-    //   if (commonConst.production() && !app.isInApplicationsFolder()) {
-    //     app.moveToApplicationsFolder();
-    //   } else {
-    //     app.dock.hide();
-    //   }
-    // } else {
-    //   app.disableHardwareAcceleration();
-    // }
+    console.log('beforeReady >>>>>');
   }
 
   onReady() {
-    const readyFunction = () => {
-      this.createWindow();
-      // API(this.windowCreator.getWindow());
-      // // this.init()
-      // createTray(this.windowCreator.getWindow());
-      // registerHotKey(this.windowCreator.getWindow());
-      // this.systemPlugins.triggerReadyHooks(
-      //   Object.assign(electron, { mainWindow: this.windowCreator.getWindow() })
-      // );
-    };
+    console.log('onReady >>>>>');
+    
+
+    const onReadyFn = () => {
+      console.log('开始初始化');
+      
+      this.windowCreator.init()
+    }
+
     if (!app.isReady()) {
-      app.on("ready", readyFunction);
+      app.on('ready', onReadyFn)
     } else {
-      readyFunction();
+      onReadyFn
     }
   }
 
-  onRunning() {
-    console.log(1);
-  }
-
   onQuit() {
+    console.log('onQuit >>>>>');
     app.on("window-all-closed", () => {
       if (process.platform !== "darwin") {
         app.quit();
