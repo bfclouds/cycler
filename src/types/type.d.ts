@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 export type Global = {
-  localPlugin: LocalPlugins
+  LOCAL_PLUGIINS: LocalPlugins
 }
 
 type PluginType = 'system' | 'app'
@@ -15,19 +15,19 @@ export interface MyPlugin {
   features?: Features[]
 }
 
-export interface Features {
-  cmds: string[]
-}
-
-type LocalPlugins = {
+export type LocalPlugins = {
   [key: string]: any,
-  plugins: MyPlugin[],
-  getLocalPlugins: () => MyPlugin[],
+  plugins: AdapterInfo[],
+  getLocalPlugins: () => AdapterInfo[],
   addPlugin: (plugin: AdapterInfo) => void
 }
-
-export interface CInputEvent extends Event {
+export interface HtmlInputEvent extends Event {
   target: HTMLInputElement
+}
+
+
+export interface Features {
+  cmds: string[]
 }
 
 export interface AdapterInfo {
@@ -49,6 +49,8 @@ export interface AdapterInfo {
   logo: string;
 
   features: Features[]
+
+  pluginType: PluginType
 }
 
 export interface RenderPlugin extends AdapterInfo {

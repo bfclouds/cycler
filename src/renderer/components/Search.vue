@@ -7,6 +7,7 @@
       id="search"
       class="main-input"
       :value="searchValue"
+      @input="onInputValue"
       placeholder="嘿，输入点啥~"
     >
       <template #suffix>
@@ -18,6 +19,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { HtmlInputEvent } from '@/types/type'
 
 export default defineComponent({
   props: {
@@ -29,7 +31,16 @@ export default defineComponent({
       default: '',
     },
   },
-  emits: ['onSearch']
+  emits: ['onSearch'],
+  setup(props, { emit }) {
+    function onInputValue(event: HtmlInputEvent) {
+      emit('onSearch', event.target.value)
+    }
+
+    return {
+      onInputValue
+    }
+  }
 })
 </script>
 

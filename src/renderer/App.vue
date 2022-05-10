@@ -1,24 +1,27 @@
 <template>
   <div id="components-layout">
-    <!-- <SearchVue
-      :searchValue="data.searchValue"
+    <SearchVue
+      :searchValue="searchValue"
+      @onSearch="onSearch"
       :currentPlugin="{}"
     ></SearchVue>
     <ResultVue
-    ></ResultVue> -->
-    1
-    23
+      :options="searchOptions"
+    ></ResultVue>
   </div>
 </template>
 
 <script setup lang="ts">
-// import SearchVue from './components/Search.vue'
-// import ResultVue from './components/Result.vue'
-import { reactive } from 'vue';
+import SearchVue from './components/Search.vue'
+import ResultVue from './components/Result.vue'
+import renderPluginManager from './plugins-manager'
 
-// const data = reactive({
-//   searchValue: '',
-// })
+const {
+  searchValue,
+  onSearch,
+  searchOptions
+} = renderPluginManager()
+
 
 </script>
 

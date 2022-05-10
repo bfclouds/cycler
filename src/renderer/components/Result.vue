@@ -1,11 +1,8 @@
 <template>
   <div class="result_options" v-show="!currentPlugin?.name">
     <a-list>
-      <a-list-item>
-        1111
-      </a-list-item>
-      <a-list-item>
-        2222
+      <a-list-item v-for="item in options" :key="item">
+        {{ item }}
       </a-list-item>
     </a-list>
   </div>
@@ -15,7 +12,7 @@ import { defineProps } from 'vue'
 
 const props = defineProps({
   options: {
-    type: [],
+    type: Array,
     default: () => []
   },
   currentPlugin: {
@@ -23,8 +20,6 @@ const props = defineProps({
     default: () => null
   }
 })
-
-console.log(props.options);
 </script>
 
 <style lang="less">
