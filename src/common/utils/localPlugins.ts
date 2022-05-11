@@ -6,7 +6,6 @@ import getLocalDataFile from '@/common/utils/getLocalDataFile'
 
 const configPath = path.join(getLocalDataFile(), "./local-plugins.json")
 const myGlobal = (global as unknown as Global)
-const myGlobalLocalPlugins = myGlobal.LOCAL_PLUGIINS
 
 ;(global as unknown as Global).LOCAL_PLUGIINS = {
   plugins: [],
@@ -26,8 +25,7 @@ const myGlobalLocalPlugins = myGlobal.LOCAL_PLUGIINS
     }
   },
   addPlugin(plugin) {
-    console.log('这是我的Plugin', plugin);
-    const plugins = myGlobalLocalPlugins.getLocalPlugins()
+    const plugins = myGlobal.LOCAL_PLUGIINS.getLocalPlugins()
     console.log('plugins: >>>>', plugins);
 
     const pluginIsExist = plugins.some(p => p.name === plugin.name)
@@ -37,13 +35,14 @@ const myGlobalLocalPlugins = myGlobal.LOCAL_PLUGIINS
 
     if (!pluginIsExist) {
       plugins.unshift(plugin)
-      myGlobalLocalPlugins.plugins = plugins
+      myGlobal.LOCAL_PLUGIINS.plugins = plugins
       fs.writeFileSync(configPath, JSON.stringify(plugins))
     }
   }
 }
 
 
+const myGlobalLocalPlugins = myGlobal.LOCAL_PLUGIINS
 ipcMain.handle('LOCAL_PLUGINS', (event, name, params) => {
   console.log(myGlobalLocalPlugins);
   
