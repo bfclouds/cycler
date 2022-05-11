@@ -8,6 +8,7 @@
       class="main-input"
       :value="searchValue"
       @input="onInputValue"
+      @keydown="onKeyDown"
       placeholder="嘿，输入点啥~"
     >
       <template #suffix>
@@ -17,31 +18,31 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { HtmlInputEvent } from '@/types/type'
+<script setup lang="ts">
+  import { withDefaults, defineProps, defineEmits, watch } from 'vue'
+  import { HtmlInputEvent, AdapterInfo } from '@/types/type'
 
-export default defineComponent({
-  props: {
-    currentPlugin: {
-      type: Object,
-    },
-    searchValue: {
-      type: String,
-      default: '',
-    },
-  },
-  emits: ['onSearch'],
-  setup(props, { emit }) {
-    function onInputValue(event: HtmlInputEvent) {
-      emit('onSearch', event.target.value)
-    }
-
-    return {
-      onInputValue
+  interface PropsType {
+    currentPlugin: AdapterInfo|null
+    searchValue: string
+  }
+  const props = withDefaults(defineProps<PropsType>(), {
+    currentPlugin: null,
+    searchValue: '',
+  })
+  watch(() => props.currentPlugin, () => {
+    console.log('watch >>> ', props.currentPlugin)
+  })
+  const emit = defineEmits(['onSearch', 'unloadPlugin'])
+  function onInputValue(event: HtmlInputEvent) {
+    emit('onSearch', event.target.value)
+  }
+  function onKeyDown(event:KeyboardEvent) {
+    // 删除键
+    if ((event.key === 'Backspace' || event.keyCode === 8) && props.searchValue.length === 0) {
+      emit('unloadPlugin')
     }
   }
-})
 </script>
 
 <style lang="less">
@@ -49,6 +50,8 @@ export default defineComponent({
   display: flex;
   align-items: center;
   width: 100%;
+  height: 60px;
+  overflow: hidden;
   font-size: 18px;
   .search-tag {
     white-space: pre;

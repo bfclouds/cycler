@@ -6,11 +6,10 @@ export default () => {
   if (!localConfigPath) {
     localConfigPath = process.env.LOCALAPPDATA || ''
   }
-  console.log(localConfigPath);
-  
-  const configPath = path.join(localConfigPath, "cycler")
-  console.log('configPath>>>', configPath);
-  
+  console.log(localConfigPath)
+
+  const configPath = path.join(localConfigPath, 'cycler')
+
   if (!fs.existsSync(configPath)) {
     fs.mkdirSync(configPath)
   }

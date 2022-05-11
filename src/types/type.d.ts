@@ -33,7 +33,7 @@ export interface Features {
 export interface AdapterInfo {
   // 插件类型
   type: "adapter";
-  // 插件名称 rubick-adapter-xxx
+  // 插件名称
   name: string;
   // 可读插件名称
   pluginName: string;
@@ -51,6 +51,12 @@ export interface AdapterInfo {
   features: Features[]
 
   pluginType: PluginType
+
+  tplPath?: string,
+
+  indexPath?: string
+
+  cmd?: string
 }
 
 export interface RenderPlugin extends AdapterInfo {
@@ -62,4 +68,9 @@ export interface RenderPlugin extends AdapterInfo {
 
 export interface PluginHandlerType {
   dir: string
+}
+
+export interface SearchOptions {
+  label: string,
+  plugin: AdapterInfo
 }

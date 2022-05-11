@@ -2,11 +2,14 @@
   <div id="components-layout">
     <SearchVue
       :searchValue="searchValue"
+      :currentPlugin="currentPlugin"
       @onSearch="onSearch"
-      :currentPlugin="{}"
+      @unloadPlugin="unloadPlugin"
     ></SearchVue>
     <ResultVue
       :options="searchOptions"
+      :currentPlugin="currentPlugin"
+      @selectPlugin="selectPlugin"
     ></ResultVue>
   </div>
 </template>
@@ -15,14 +18,16 @@
 import SearchVue from './components/Search.vue'
 import ResultVue from './components/Result.vue'
 import renderPluginManager from './plugins-manager'
+import { AdapterInfo } from '@/types/type'
 
 const {
   searchValue,
   onSearch,
-  searchOptions
+  searchOptions,
+  currentPlugin,
+  selectPlugin,
+  unloadPlugin
 } = renderPluginManager()
-
-
 </script>
 
 <style lang="less">

@@ -1,5 +1,3 @@
-import browserMain from './main';
+import browserMain from './main'
 
-export {
-  browserMain
-}
+export { browserMain }

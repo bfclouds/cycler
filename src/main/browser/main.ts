@@ -14,10 +14,9 @@ export default () => {
       height: 600,
       webPreferences: {
         nodeIntegration: true,
-        contextIsolation: false
+        contextIsolation: false,
       },
     })
-    
     if (process.env.WEBPACK_DEV_SERVER_URL) {
       mainWIndow.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
       mainWIndow.webContents.openDevTools({
@@ -35,6 +34,6 @@ export default () => {
 
   return {
     init,
-    getMainWindow
+    getMainWindow,
   }
 }
