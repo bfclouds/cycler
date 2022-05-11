@@ -1,4 +1,5 @@
-import { main } from './browser'
+import { browserMain } from './browser'
+import { main } from './common'
 import { app, BrowserView, BrowserWindow } from 'electron'
 
 // 设置global
@@ -6,8 +7,11 @@ import '@/common/utils/localPlugins'
 
 class App {
   private windowCreator: { init: () => void, getMainWindow: () => BrowserWindow }
+  private mainCreator: { init: () => void }
+
   constructor() {
-    this.windowCreator = main();
+    this.windowCreator = browserMain()
+    this.mainCreator = main()
     const lock = app.requestSingleInstanceLock()
     if (!lock) {
       app.quit()
@@ -26,9 +30,9 @@ class App {
     console.log('onReady >>>>>');
     const onReadyFn = () => {
       // 初始化ui
-      this.windowCreator.init();
+      this.windowCreator.init()
       // 初始化插件市场
-      
+      this.mainCreator.init()
 
       // 插件加载初始化
       // const mainWIndow = this.windowCreator.getMainWindow()

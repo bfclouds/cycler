@@ -1,5 +1,5 @@
-import main from './main';
+import browserMain from './main';
 
 export {
-  main
+  browserMain
 }

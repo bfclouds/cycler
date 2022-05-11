@@ -59,3 +59,7 @@ export interface RenderPlugin extends AdapterInfo {
   pluginType: PluginType,
   action?: string
 }
+
+export interface PluginHandlerType {
+  dir: string
+}

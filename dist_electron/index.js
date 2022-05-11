@@ -1190,6 +1190,18 @@ eval("/*\n Yaku v0.16.7\n (c) 2015 Yad Smood. http://ysmood.org\n License MIT\n*
 
 /***/ }),
 
+/***/ "./src/common/constans/plugin.ts":
+/*!***************************************!*\
+  !*** ./src/common/constans/plugin.ts ***!
+  \***************************************/
+/*! exports provided: APP_PATH, PLUGIN_INSTALL_DIR */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"APP_PATH\", function() { return APP_PATH; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"PLUGIN_INSTALL_DIR\", function() { return PLUGIN_INSTALL_DIR; });\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! path */ \"path\");\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! electron */ \"electron\");\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_1__);\n\n\nconst APP_PATH = electron__WEBPACK_IMPORTED_MODULE_1__[\"app\"].getPath(\"cache\");\nconst PLUGIN_INSTALL_DIR = path__WEBPACK_IMPORTED_MODULE_0___default.a.join(APP_PATH, \"./plugins\");\n\n\n\n//# sourceURL=webpack:///./src/common/constans/plugin.ts?");
+
+/***/ }),
+
 /***/ "./src/common/utils/getLocalDataFile.ts":
 /*!**********************************************!*\
   !*** ./src/common/utils/getLocalDataFile.ts ***!
@@ -1210,7 +1222,19 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var path
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! electron */ \"electron\");\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! fs */ \"fs\");\n/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(fs__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! path */ \"path\");\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var _common_utils_getLocalDataFile__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/common/utils/getLocalDataFile */ \"./src/common/utils/getLocalDataFile.ts\");\n\n\n\n\nconst configPath = path__WEBPACK_IMPORTED_MODULE_2___default.a.join(Object(_common_utils_getLocalDataFile__WEBPACK_IMPORTED_MODULE_3__[\"default\"])(), \"./local-plugins.json\");\nconst myGlobal = global;\nconst myGlobalLocalPlugins = myGlobal.LOCAL_PLUGIINS;\nglobal.LOCAL_PLUGIINS = {\n    plugins: [],\n    getLocalPlugins() {\n        try {\n            if (myGlobalLocalPlugins.plugins.length <= 0) {\n                myGlobalLocalPlugins.plugins = JSON.parse(fs__WEBPACK_IMPORTED_MODULE_1___default.a.readFileSync(configPath, \"utf-8\"));\n            }\n            return myGlobalLocalPlugins.plugins;\n        }\n        catch (error) {\n            myGlobalLocalPlugins.plugins = [];\n            return myGlobalLocalPlugins.plugins;\n        }\n    },\n    addPlugin(plugin) {\n        const plugins = myGlobal.LOCAL_PLUGIINS.getLocalPlugins();\n        const pluginIsExist = plugins.some(p => p.name === plugin.name);\n        if (pluginIsExist) {\n            return;\n        }\n        if (!pluginIsExist) {\n            plugins.unshift(plugin);\n            myGlobal.LOCAL_PLUGIINS.plugins = plugins;\n            fs__WEBPACK_IMPORTED_MODULE_1___default.a.writeFileSync(configPath, JSON.stringify(plugins));\n        }\n    }\n};\nelectron__WEBPACK_IMPORTED_MODULE_0__[\"ipcMain\"].handle('LOCAL_PLUGINS', (event, name, params) => {\n    console.log(myGlobalLocalPlugins);\n    if (!myGlobalLocalPlugins[name]) {\n        return;\n    }\n    if (typeof myGlobalLocalPlugins[name] === 'function') {\n        return myGlobalLocalPlugins[name](params);\n    }\n    else {\n        return myGlobalLocalPlugins[name];\n    }\n});\n/* harmony default export */ __webpack_exports__[\"default\"] = (myGlobal);\n\n\n//# sourceURL=webpack:///./src/common/utils/localPlugins.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! electron */ \"electron\");\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! fs */ \"fs\");\n/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(fs__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! path */ \"path\");\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var _common_utils_getLocalDataFile__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/common/utils/getLocalDataFile */ \"./src/common/utils/getLocalDataFile.ts\");\n\n\n\n\nconst configPath = path__WEBPACK_IMPORTED_MODULE_2___default.a.join(Object(_common_utils_getLocalDataFile__WEBPACK_IMPORTED_MODULE_3__[\"default\"])(), \"./local-plugins.json\");\nconst myGlobal = global;\nconst myGlobalLocalPlugins = myGlobal.LOCAL_PLUGIINS;\nglobal.LOCAL_PLUGIINS = {\n    plugins: [],\n    getLocalPlugins() {\n        try {\n            if (myGlobalLocalPlugins.plugins.length <= 0) {\n                myGlobalLocalPlugins.plugins = JSON.parse(fs__WEBPACK_IMPORTED_MODULE_1___default.a.readFileSync(configPath, \"utf-8\"));\n            }\n            return myGlobalLocalPlugins.plugins;\n        }\n        catch (error) {\n            console.log(error);\n            myGlobalLocalPlugins.plugins = [];\n            return myGlobalLocalPlugins.plugins;\n        }\n    },\n    addPlugin(plugin) {\n        console.log('这是我的Plugin', plugin);\n        const plugins = myGlobalLocalPlugins.getLocalPlugins();\n        console.log('plugins: >>>>', plugins);\n        const pluginIsExist = plugins.some(p => p.name === plugin.name);\n        if (pluginIsExist) {\n            return;\n        }\n        if (!pluginIsExist) {\n            plugins.unshift(plugin);\n            myGlobalLocalPlugins.plugins = plugins;\n            fs__WEBPACK_IMPORTED_MODULE_1___default.a.writeFileSync(configPath, JSON.stringify(plugins));\n        }\n    }\n};\nelectron__WEBPACK_IMPORTED_MODULE_0__[\"ipcMain\"].handle('LOCAL_PLUGINS', (event, name, params) => {\n    console.log(myGlobalLocalPlugins);\n    if (!myGlobalLocalPlugins[name]) {\n        return;\n    }\n    if (typeof myGlobalLocalPlugins[name] === 'function') {\n        return myGlobalLocalPlugins[name](params);\n    }\n    else {\n        return myGlobalLocalPlugins[name];\n    }\n});\n/* harmony default export */ __webpack_exports__[\"default\"] = (myGlobal);\n\n\n//# sourceURL=webpack:///./src/common/utils/localPlugins.ts?");
+
+/***/ }),
+
+/***/ "./src/core/plugin-handler/index.ts":
+/*!******************************************!*\
+  !*** ./src/core/plugin-handler/index.ts ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! fs */ \"fs\");\n/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(fs__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! path */ \"path\");\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_1__);\n\n\nclass PluginHandler {\n    constructor(options) {\n        if (!fs__WEBPACK_IMPORTED_MODULE_0___default.a.existsSync(options.dir)) {\n            fs__WEBPACK_IMPORTED_MODULE_0___default.a.mkdirSync(options.dir);\n            fs__WEBPACK_IMPORTED_MODULE_0___default.a.writeFileSync(`${options.dir}/package.json`, '{\"dependencies\":{}}');\n        }\n        this.pluginDir = options.dir;\n    }\n    getPluginInfo(pluginName, pluginPath) {\n        pluginPath = pluginPath ? pluginPath : path__WEBPACK_IMPORTED_MODULE_1___default.a.resolve(this.pluginDir, \"node_modules\", pluginName, \"plugin.json\");\n        if (fs__WEBPACK_IMPORTED_MODULE_0___default.a.existsSync(pluginPath)) {\n            const pluginInfo = fs__WEBPACK_IMPORTED_MODULE_0___default.a.readFileSync(pluginPath, 'utf-8');\n            return JSON.parse(pluginInfo);\n        }\n        else {\n            return null;\n        }\n    }\n}\n/* harmony default export */ __webpack_exports__[\"default\"] = (PluginHandler);\n\n\n//# sourceURL=webpack:///./src/core/plugin-handler/index.ts?");
 
 /***/ }),
 
@@ -1218,11 +1242,11 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var elec
 /*!***********************************!*\
   !*** ./src/main/browser/index.ts ***!
   \***********************************/
-/*! exports provided: main */
+/*! exports provided: browserMain */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./main */ \"./src/main/browser/main.ts\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"main\", function() { return _main__WEBPACK_IMPORTED_MODULE_0__[\"default\"]; });\n\n\n\n\n\n//# sourceURL=webpack:///./src/main/browser/index.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./main */ \"./src/main/browser/main.ts\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"browserMain\", function() { return _main__WEBPACK_IMPORTED_MODULE_0__[\"default\"]; });\n\n\n\n\n\n//# sourceURL=webpack:///./src/main/browser/index.ts?");
 
 /***/ }),
 
@@ -1238,6 +1262,30 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var elec
 
 /***/ }),
 
+/***/ "./src/main/common/index.ts":
+/*!**********************************!*\
+  !*** ./src/main/common/index.ts ***!
+  \**********************************/
+/*! exports provided: main */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./main */ \"./src/main/common/main.ts\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"main\", function() { return _main__WEBPACK_IMPORTED_MODULE_0__[\"default\"]; });\n\n\n\n\n\n//# sourceURL=webpack:///./src/main/common/index.ts?");
+
+/***/ }),
+
+/***/ "./src/main/common/main.ts":
+/*!*********************************!*\
+  !*** ./src/main/common/main.ts ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _core_plugin_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/core/plugin-handler */ \"./src/core/plugin-handler/index.ts\");\n/* harmony import */ var _common_constans_plugin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/common/constans/plugin */ \"./src/common/constans/plugin.ts\");\n\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (() => {\n    function init() {\n        const pluginManager = new _core_plugin_handler__WEBPACK_IMPORTED_MODULE_0__[\"default\"]({\n            dir: _common_constans_plugin__WEBPACK_IMPORTED_MODULE_1__[\"PLUGIN_INSTALL_DIR\"]\n        });\n        const pluginInfo = pluginManager.getPluginInfo('feature', `${\"/Users/zz/Desktop/me/cycler/public\"}/feature/package.json`);\n        if (!pluginInfo) {\n            return;\n        }\n        global.LOCAL_PLUGIINS.addPlugin(pluginInfo);\n    }\n    return {\n        init\n    };\n});\n\n\n//# sourceURL=webpack:///./src/main/common/main.ts?");
+
+/***/ }),
+
 /***/ "./src/main/index.ts":
 /*!***************************!*\
   !*** ./src/main/index.ts ***!
@@ -1246,7 +1294,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var elec
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _browser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./browser */ \"./src/main/browser/index.ts\");\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! electron */ \"electron\");\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _common_utils_localPlugins__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/common/utils/localPlugins */ \"./src/common/utils/localPlugins.ts\");\n\n\n// 设置global\n\nclass App {\n    constructor() {\n        this.windowCreator = Object(_browser__WEBPACK_IMPORTED_MODULE_0__[\"main\"])();\n        const lock = electron__WEBPACK_IMPORTED_MODULE_1__[\"app\"].requestSingleInstanceLock();\n        if (!lock) {\n            electron__WEBPACK_IMPORTED_MODULE_1__[\"app\"].quit();\n        }\n        else {\n            this.beforeReady();\n            this.onReady();\n            this.onQuit();\n        }\n    }\n    beforeReady() {\n        console.log('beforeReady >>>>>');\n    }\n    onReady() {\n        console.log('onReady >>>>>');\n        const onReadyFn = () => {\n            // 初始化ui\n            this.windowCreator.init();\n            // 初始化插件市场\n            // 插件加载初始化\n            // const mainWIndow = this.windowCreator.getMainWindow()\n            // const view = new BrowserView()\n            // mainWIndow.setBrowserView(view)\n            // view.setBounds({\n            //   x: 0,\n            //   y: 60,\n            //   width: 800,\n            //   height: 260\n            // })\n            // view.setAutoResize({\n            //   width: true,\n            //   height: true,\n            //   horizontal: true,\n            //   vertical: true\n            // })\n            // view.webContents.loadFile(path.join('../public/feature/index.html'))\n        };\n        if (!electron__WEBPACK_IMPORTED_MODULE_1__[\"app\"].isReady()) {\n            electron__WEBPACK_IMPORTED_MODULE_1__[\"app\"].on('ready', onReadyFn);\n        }\n        else {\n            onReadyFn;\n        }\n    }\n    onQuit() {\n        console.log('onQuit >>>>>');\n        electron__WEBPACK_IMPORTED_MODULE_1__[\"app\"].on(\"window-all-closed\", () => {\n            if (process.platform !== \"darwin\") {\n                electron__WEBPACK_IMPORTED_MODULE_1__[\"app\"].quit();\n            }\n        });\n    }\n}\nnew App();\n\n\n//# sourceURL=webpack:///./src/main/index.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _browser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./browser */ \"./src/main/browser/index.ts\");\n/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common */ \"./src/main/common/index.ts\");\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! electron */ \"electron\");\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var _common_utils_localPlugins__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/common/utils/localPlugins */ \"./src/common/utils/localPlugins.ts\");\n\n\n\n// 设置global\n\nclass App {\n    constructor() {\n        this.windowCreator = Object(_browser__WEBPACK_IMPORTED_MODULE_0__[\"browserMain\"])();\n        this.mainCreator = Object(_common__WEBPACK_IMPORTED_MODULE_1__[\"main\"])();\n        const lock = electron__WEBPACK_IMPORTED_MODULE_2__[\"app\"].requestSingleInstanceLock();\n        if (!lock) {\n            electron__WEBPACK_IMPORTED_MODULE_2__[\"app\"].quit();\n        }\n        else {\n            this.beforeReady();\n            this.onReady();\n            this.onQuit();\n        }\n    }\n    beforeReady() {\n        console.log('beforeReady >>>>>');\n    }\n    onReady() {\n        console.log('onReady >>>>>');\n        const onReadyFn = () => {\n            // 初始化ui\n            this.windowCreator.init();\n            // 初始化插件市场\n            this.mainCreator.init();\n            // 插件加载初始化\n            // const mainWIndow = this.windowCreator.getMainWindow()\n            // const view = new BrowserView()\n            // mainWIndow.setBrowserView(view)\n            // view.setBounds({\n            //   x: 0,\n            //   y: 60,\n            //   width: 800,\n            //   height: 260\n            // })\n            // view.setAutoResize({\n            //   width: true,\n            //   height: true,\n            //   horizontal: true,\n            //   vertical: true\n            // })\n            // view.webContents.loadFile(path.join('../public/feature/index.html'))\n        };\n        if (!electron__WEBPACK_IMPORTED_MODULE_2__[\"app\"].isReady()) {\n            electron__WEBPACK_IMPORTED_MODULE_2__[\"app\"].on('ready', onReadyFn);\n        }\n        else {\n            onReadyFn;\n        }\n    }\n    onQuit() {\n        console.log('onQuit >>>>>');\n        electron__WEBPACK_IMPORTED_MODULE_2__[\"app\"].on(\"window-all-closed\", () => {\n            if (process.platform !== \"darwin\") {\n                electron__WEBPACK_IMPORTED_MODULE_2__[\"app\"].quit();\n            }\n        });\n    }\n}\nnew App();\n\n\n//# sourceURL=webpack:///./src/main/index.ts?");
 
 /***/ }),
 

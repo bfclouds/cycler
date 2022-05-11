@@ -19,12 +19,17 @@ const myGlobalLocalPlugins = myGlobal.LOCAL_PLUGIINS
       }
       return myGlobalLocalPlugins.plugins
     } catch (error) {
+      console.log(error);
+      
       myGlobalLocalPlugins.plugins = []
       return myGlobalLocalPlugins.plugins
     }
   },
   addPlugin(plugin) {
-    const plugins = myGlobal.LOCAL_PLUGIINS.getLocalPlugins()
+    console.log('这是我的Plugin', plugin);
+    const plugins = myGlobalLocalPlugins.getLocalPlugins()
+    console.log('plugins: >>>>', plugins);
+
     const pluginIsExist = plugins.some(p => p.name === plugin.name)
     if (pluginIsExist) {
       return
@@ -32,7 +37,7 @@ const myGlobalLocalPlugins = myGlobal.LOCAL_PLUGIINS
 
     if (!pluginIsExist) {
       plugins.unshift(plugin)
-      myGlobal.LOCAL_PLUGIINS.plugins = plugins
+      myGlobalLocalPlugins.plugins = plugins
       fs.writeFileSync(configPath, JSON.stringify(plugins))
     }
   }
