@@ -55,6 +55,12 @@ export default () => {
         }
       })
     })
+    console.log('options>>>', options)
+
+    // 根据搜索结果
+    ipcRenderer.invoke('msg-trigger', 'setWindowHeight', {
+      height: options.length * 45 + 60,
+    })
     return options
   }
 

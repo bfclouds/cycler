@@ -11,7 +11,11 @@ export default () => {
   function createWindow() {
     mainWIndow = new BrowserWindow({
       width: 800,
-      height: 600,
+      height: 60,
+      frame: false,
+      resizable: false,
+      useContentSize: true,
+      opacity: 0.98,
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: false,
@@ -19,9 +23,9 @@ export default () => {
     })
     if (process.env.WEBPACK_DEV_SERVER_URL) {
       mainWIndow.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-      mainWIndow.webContents.openDevTools({
-        mode: 'bottom',
-      })
+      // mainWIndow.webContents.openDevTools({
+      //   mode: 'bottom',
+      // })
     } else {
       createProtocol('app')
       mainWIndow.loadFile(`app://./index.html`)

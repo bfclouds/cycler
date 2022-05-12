@@ -30,9 +30,6 @@
     currentPlugin: null,
     searchValue: '',
   })
-  watch(() => props.currentPlugin, () => {
-    console.log('watch >>> ', props.currentPlugin)
-  })
   const emit = defineEmits(['onSearch', 'unloadPlugin'])
   function onInputValue(event: HtmlInputEvent) {
     emit('onSearch', event.target.value)

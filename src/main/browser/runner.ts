@@ -2,20 +2,18 @@ import { BrowserWindow, BrowserView } from 'electron'
 import { AdapterInfo } from '@/types/type'
 import path from 'path'
 import { PLUGIN_INSTALL_DIR } from '@/common/constans/plugin'
+// interface Runner {
+//   init: () => void
+//   createView: (plugin: AdapterInfo, window: BrowserWindow) => void
+//   removeView: (window: BrowserWindow, callBack: () => void) => void
+// }
 
-interface Runner {
-  init: () => void
-  createView: (plugin: AdapterInfo, window: BrowserWindow) => void
-  removeView: (window: BrowserWindow) => void
-}
-
-export default (): Runner => {
+export default () => {
   let renderView: BrowserView | null = null
-
-  function init() {
-    console.log(1)
-  }
   function createView(plugin: AdapterInfo, window: BrowserWindow) {
+    if (renderView !== null) {
+      return
+    }
     let pluginIndexPath = plugin.tplPath || plugin.indexPath
     if (!pluginIndexPath) {
       const pluginPath = path.resolve(
@@ -42,16 +40,16 @@ export default (): Runner => {
     })
     renderView = view
   }
-  function removeView(window: BrowserWindow) {
+  function removeView(window: BrowserWindow, callBack?: () => void) {
     if (renderView !== null) {
       window.removeBrowserView(renderView)
       window.webContents.executeJavaScript('window.pluginUnloaded()')
+      callBack && callBack()
     }
     renderView = null
   }
 
   return {
-    init,
     createView,
     removeView,
   }

@@ -18,16 +18,12 @@ const myGlobal = global as unknown as Global
       }
       return myGlobalLocalPlugins.plugins
     } catch (error) {
-      console.log(error)
-
       myGlobalLocalPlugins.plugins = []
       return myGlobalLocalPlugins.plugins
     }
   },
   addPlugin(plugin) {
     const plugins = myGlobal.LOCAL_PLUGIINS.getLocalPlugins()
-    console.log('plugins: >>>>', plugins)
-
     const pluginIsExist = plugins.some((p) => p.name === plugin.name)
     if (pluginIsExist) {
       return
@@ -43,8 +39,6 @@ const myGlobal = global as unknown as Global
 
 const myGlobalLocalPlugins = myGlobal.LOCAL_PLUGIINS
 ipcMain.handle('LOCAL_PLUGINS', (event, name, params) => {
-  console.log(myGlobalLocalPlugins)
-
   if (!myGlobalLocalPlugins[name]) {
     return
   }

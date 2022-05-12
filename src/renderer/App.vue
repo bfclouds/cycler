@@ -1,5 +1,5 @@
 <template>
-  <div id="components-layout">
+  <div id="components-layout" class="drag">
     <SearchVue
       :searchValue="searchValue"
       :currentPlugin="currentPlugin"
@@ -18,16 +18,32 @@
 import SearchVue from './components/Search.vue'
 import ResultVue from './components/Result.vue'
 import renderPluginManager from './plugins-manager'
-import { AdapterInfo } from '@/types/type'
+import { nextTick, watch } from 'vue'
+import { ipcRenderer } from 'electron'
 
 const {
   searchValue,
   onSearch,
   searchOptions,
+
   currentPlugin,
   selectPlugin,
   unloadPlugin
 } = renderPluginManager()
+
+watch([searchOptions], () => {
+  if(currentPlugin.value?.name) {
+    return
+  }
+  nextTick(() => {
+    // 根据搜索结果改变窗口大小
+    ipcRenderer.invoke('msg-trigger', 'setWindowHeight', {
+      height: searchOptions.value.length * 45 + 60,
+    })
+  })
+})
+
+
 </script>
 
 <style lang="less">
@@ -36,6 +52,9 @@ const {
   overflow: hidden;
   ::-webkit-scrollbar {
     width: 0;
+  }
+  &.drag {
+    -webkit-app-region: drag;
   }
 }
 </style>
