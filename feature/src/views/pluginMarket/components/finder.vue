@@ -2,10 +2,12 @@
   <PluginWrapperVue
     title="推荐"
     :dataList="dataList"
-  ></PluginWrapperVue>
+  >
+    <a-button type="text" style="color: #0088ff;">查看全部</a-button>
+  </PluginWrapperVue>
 </template>
 <script setup>
-import PluginWrapperVue from './PluginWrapper.vue'
+import PluginWrapperVue from './plugin-wrapper.vue'
 import { ref } from 'vue'
 
 const dataList = ref([{

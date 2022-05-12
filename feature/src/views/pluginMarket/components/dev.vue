@@ -1,8 +1,8 @@
 <template>
   <PluginWrapperVue
-    title="推荐"
+    title="开发"
   ></PluginWrapperVue>
 </template>
 <script setup>
-import PluginWrapperVue from './PluginWrapper.vue';
+import PluginWrapperVue from './plugin-wrapper.vue';
 </script>

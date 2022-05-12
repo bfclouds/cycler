@@ -1,6 +1,24 @@
 <template>
   <div class="plugin-wrapper">
-    <h3 class="title">{{ title }}</h3>
+    <a-row type="flex" justify="space-between">
+      <a-col>
+        <h3 class="title">{{ title }}</h3>
+      </a-col>
+      <a-col>
+        <slot>
+          <a-dropdown-button>
+            {{ activeSort.label }}
+            <template #overlay>
+              <a-menu>
+                <a-menu-item v-for="option in sortOptions" :key="option.value" @click="handleMenuClick(option)">
+                  {{ option.label }}
+                </a-menu-item>
+              </a-menu>
+            </template>
+          </a-dropdown-button>
+        </slot>
+      </a-col>
+    </a-row>
     <div class="plugin-list">
       <a-list :grid="{gutter: 16, column: 2}" :dataSource="dataList">
         <template #renderItem="{item}">
@@ -28,7 +46,7 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps, ref } from 'vue'
 
 defineProps({
   title: {
@@ -38,12 +56,39 @@ defineProps({
   dataList: {
     type: Array,
     default: () => []
+  },
+  isShowHandler: {
+    type: Boolean,
+    default: false
   }
 })
+const sortOptions = ref([{
+    value: 1,
+    label: '最受欢迎'
+  },{
+    value: 2,
+    label: '评分最高'
+  },{
+    value: 3,
+    label: '最新发布'
+  },{
+    value: 4,
+    label: '最新更新'
+  }]
+)
+const activeSort = ref(sortOptions.value[0])
+function handleMenuClick(option) {
+  activeSort.value = option
+}
+
 </script>
 
 <style lang="less" scoped>
 .plugin-wrapper {
+  .title {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
   .ellipse {
     display: inline-block;
     white-space: nowrap;
