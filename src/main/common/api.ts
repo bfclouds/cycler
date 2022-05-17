@@ -1,6 +1,7 @@
 import { BrowserWindow, ipcMain } from 'electron'
 import { AdapterInfo } from '@/types/type'
 import runner from '@/main/browser/runner'
+import safeParse from '@/common/utils/jsonParse'
 
 interface APIType {
   [key: string]: any
@@ -43,6 +44,8 @@ export const API: APIType = {
 export default (mainWindow: BrowserWindow) => {
   ipcMain.handle('msg-trigger', (event, name, params) => {
     let win = mainWindow
+    params = safeParse(params)
+
     if (params && params.winId) {
       win = BrowserWindow.fromId(params.winId) || mainWindow
     }

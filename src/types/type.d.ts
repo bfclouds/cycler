@@ -8,23 +8,23 @@ type PluginType = 'system' | 'app'
 
 export interface MyPlugin {
   cmd: string
-  name: string,
-  pluginType: PluginType,
-  entery: string,
-  indexPath: string,
+  name: string
+  pluginType: PluginType
+  entery: string
+  indexPath: string
   features?: Features[]
 }
 
 export type LocalPlugins = {
-  [key: string]: any,
-  plugins: AdapterInfo[],
-  getLocalPlugins: () => AdapterInfo[],
+  [key: string]: any
+  plugins: AdapterInfo[]
+  getLocalPlugins: () => AdapterInfo[]
   addPlugin: (plugin: AdapterInfo) => void
+  downloadPlugin: (plugin: AdapterInfo) => void
 }
 export interface HtmlInputEvent extends Event {
   target: HTMLInputElement
 }
-
 
 export interface Features {
   cmds: string[]
@@ -32,37 +32,41 @@ export interface Features {
 
 export interface AdapterInfo {
   // 插件类型
-  type: "adapter";
+  type: 'adapter'
   // 插件名称
-  name: string;
+  name: string
   // 可读插件名称
-  pluginName: string;
+  pluginName: string
   // 作者
-  author: string;
+  author: string
   // 描述
-  description: string;
+  description: string
   // 入口文件
-  main: string;
+  main: string
   // 版本
-  version: string;
+  version: string
   // logo地址
-  logo: string;
+  logo: string
 
   features: Features[]
 
   pluginType: PluginType
 
-  tplPath?: string,
+  tplPath?: string
 
   indexPath?: string
 
   cmd?: string
+
+  preload?: string
+
+  isDev?: boolean
 }
 
 export interface RenderPlugin extends AdapterInfo {
-  feature: Features, 
-  cmd: string,
-  pluginType: PluginType,
+  feature: Features
+  cmd: string
+  pluginType: PluginType
   action?: string
 }
 
@@ -71,6 +75,6 @@ export interface PluginHandlerType {
 }
 
 export interface SearchOptions {
-  label: string,
+  label: string
   plugin: AdapterInfo
 }

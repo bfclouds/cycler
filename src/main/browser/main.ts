@@ -24,7 +24,7 @@ export default () => {
     if (process.env.WEBPACK_DEV_SERVER_URL) {
       mainWIndow.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
       // mainWIndow.webContents.openDevTools({
-      //   mode: 'bottom',
+      //   mode: 'right',
       // })
     } else {
       createProtocol('app')

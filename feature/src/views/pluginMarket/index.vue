@@ -100,6 +100,7 @@ function onSearch() {
     flex: 1;
     height: 100%;
     padding: 20px;
+    overflow-y: scroll;
     background-color: #fff;
   }
 }

@@ -1,16 +1,12 @@
-// const {remote} = require("electron");
+const { ipcRenderer } = require('electron')
 
-// window.market = {
-//   getLocalPlugins() {
-//     return remote.getGlobal("LOCAL_PLUGINS").getLocalPlugins();
-//   },
-//   downloadPlugin(plugin) {
-//     return remote.getGlobal("LOCAL_PLUGINS").downloadPlugin(plugin);
-//   },
-//   deletePlugin(plugin) {
-//     return remote.getGlobal("LOCAL_PLUGINS").deletePlugin(plugin);
-//   },
-//   refreshPlugin(plugin) {
-//     return remote.getGlobal("LOCAL_PLUGINS").refreshPlugin(plugin);
-//   },
-// };
+window.market = {
+  async downloadPlugin(plugin) {
+    const res = await ipcRenderer.invoke(
+      'LOCAL_PLUGINS',
+      'downloadPlugin',
+      JSON.stringify(plugin)
+    )
+    return res
+  },
+}

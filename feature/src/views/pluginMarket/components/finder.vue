@@ -8,15 +8,14 @@
 </template>
 <script setup>
 import PluginWrapperVue from './plugin-wrapper.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import total from '@/assets/api/total.json'
+// https://gitee.com/api/v5/repos/monkeyWang/rubick-database/commits/master
 
-const dataList = ref([{
-  title: '颜色助手',
-  logo: '',
-  description: '颜色信息、ui色卡、传统色、渐变色等等'
-}, {
-  title: '书签',
-  logo: '',
-  description: '记录生活'
-}])
+const dataList = ref([])
+
+onMounted(() => {
+  console.log(total);
+  dataList.value = total
+})
 </script>

@@ -40,8 +40,15 @@ export default () => {
       'getLocalPlugins',
       { value }
     )
+    console.log(plugins)
+
     function onSearchValueByKey(value: string, list: string[]) {
-      return list.filter((item) => item.includes(value.toLowerCase()))
+      return list.filter((item) => {
+        if (typeof item === 'string') {
+          return item.includes(value.toLowerCase())
+        }
+        return false
+      })
     }
     const options: SearchOptions[] = []
     plugins.forEach((plugin) => {

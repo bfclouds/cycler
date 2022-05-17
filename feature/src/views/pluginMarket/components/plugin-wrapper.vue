@@ -24,15 +24,14 @@
         <template #renderItem="{item}">
           <a-list-item>
             <template #actions>
-              <span class="icon iconfont icon-download_plugin" >&#xe9c2;</span>
+              <span class="icon iconfont icon-download_plugin" @click="addPlugin(item)">&#xe9c2;</span>
             </template>
             <a-list-item-meta>
               <template #avatar>
-                logo
-                <!-- <a-avatar :src="item.picture.large" /> -->
+                <a-avatar :src="item.logo" />
               </template>
               <template #title>
-                <span>{{ item.title }}</span>
+                <span>{{ item.pluginName }}</span>
               </template>
               <template #description>
                 <span class="ellipse">{{ item.description }}</span>
@@ -79,6 +78,11 @@ const sortOptions = ref([{
 const activeSort = ref(sortOptions.value[0])
 function handleMenuClick(option) {
   activeSort.value = option
+}
+
+function addPlugin(plugin) {
+  console.log('惦记了添加插件》〉》');
+  window.market.downloadPlugin(plugin)
 }
 
 </script>
