@@ -51,9 +51,7 @@
       placement="right"
       :mask="false">
         <template #closeIcon>
-          <div>
-            jsdklfjls
-          </div>
+          <span class="icon iconfont" style="font-size: 16px;">&#xe601;</span>
         </template>
         
         {{ selectedPlugin?.name }}
