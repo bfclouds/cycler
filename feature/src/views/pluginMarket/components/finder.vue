@@ -15,7 +15,7 @@ import total from '@/assets/api/total.json'
 const dataList = ref([])
 
 onMounted(() => {
-  console.log(total);
+  console.log(total)
   dataList.value = total
 })
 </script>

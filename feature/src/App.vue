@@ -31,14 +31,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from '@/store'
 
 const router = useRouter()
 const current = ref(['plugin-market'])
 function changeMenu(key) {
   router.push(key)
 }
+
+const { getLocalPlugin } = useStore()
+onMounted(() => {
+  getLocalPlugin()
+})
 </script>
 
 <style lang="less">
