@@ -20,7 +20,7 @@ export type LocalPlugins = {
   plugins: AdapterInfo[]
   getLocalPlugins: () => AdapterInfo[]
   addPlugin: (plugin: AdapterInfo) => void
-  downloadPlugin: (plugin: AdapterInfo) => void
+  downloadPlugin: (plugin: AdapterInfo) => Promise<any>
 }
 export interface HtmlInputEvent extends Event {
   target: HTMLInputElement

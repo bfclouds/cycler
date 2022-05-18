@@ -17,7 +17,7 @@
         <template #icon>
           <span style="font-size: 18px;" class="icon iconfont">&#xe8b8;</span>
         </template>
-        便好设置
+        偏好设置
       </a-menu-item>
       <a-menu-item key="user">
         <template #icon>

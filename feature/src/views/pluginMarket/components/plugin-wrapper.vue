@@ -10,7 +10,11 @@
             {{ activeSort.label }}
             <template #overlay>
               <a-menu>
-                <a-menu-item v-for="option in sortOptions" :key="option.value" @click="handleMenuClick(option)">
+                <a-menu-item
+                  v-for="option in sortOptions"
+                  :key="option.value"
+                  @click="handleMenuClick(option)"
+                >
                   {{ option.label }}
                 </a-menu-item>
               </a-menu>
@@ -20,12 +24,20 @@
       </a-col>
     </a-row>
     <div class="plugin-list">
-      <a-list :grid="{gutter: 16, column: 2}" :dataSource="dataList">
-        <template #renderItem="{item}">
+      <a-list :grid="{ gutter: 16, column: 2 }" :dataSource="dataList">
+        <template #renderItem="{ item }">
           <a-list-item @click="selectPlugin(item)">
             <template #actions>
-              <span v-if="!localPluginsMap[item.name] && currentDownloadPlugin?.name !== item.name" class="icon iconfont icon-download_plugin" @click.stop="addPlugin(item)">&#xe9c2;</span>
-              <ProgressBar v-if="currentDownloadPlugin?.name === item.name" percent=0.3></ProgressBar>
+              <ProgressBar
+                v-if="item.isLoading"
+                :percent="item.downloadPrecent"
+              ></ProgressBar>
+              <span
+                v-else-if="!localPluginsMap[item.name]"
+                class="icon iconfont icon-download_plugin"
+                @click.stop="addPlugin(item)"
+                >&#xe9c2;</span
+              >
             </template>
             <a-list-item-meta>
               <template #avatar>
@@ -45,55 +57,92 @@
     <a-drawer
       :visible="visible"
       width="calc(100% - 200px)"
-      style="height:calc(100% - 47px);top: 47px;"
+      style="height: calc(100% - 47px); top: 47px"
       class="plugin-info"
-      :title="selectedPlugin?.pluginName"
       placement="right"
-      :mask="false">
-        <template #closeIcon>
-          <span class="icon iconfont" style="font-size: 16px;">&#xe601;</span>
-        </template>
-        
-        {{ selectedPlugin?.name }}
-  </a-drawer>
+      :mask="false"
+    >
+      <template #closeIcon>
+        <span
+          class="icon iconfont"
+          style="font-size: 16px"
+          @click="onClosePluginDetail"
+          >&#xe601;</span
+        >
+      </template>
+      <template #extra>
+        <span
+          style="font-size: 16px; cursor: pointer"
+          @click="onClosePluginDetail"
+          >【 临时关闭按钮 】</span>
+      </template>
+      <template #title>
+        <a-row type="flex" justify="space-between">
+          <a-col>{{ selectedPlugin.pluginName }}</a-col>
+          <a-col>
+            <ProgressBar
+              v-if="selectedPlugin.isLoading"
+              :percent="selectedPlugin.downloadPrecent"
+            ></ProgressBar>
+            <span
+              v-else-if="!localPluginsMap[selectedPlugin.name]"
+              class="icon iconfont icon-download_plugin"
+              @click.stop="addPlugin(selectedPlugin)"
+              >&#xe9c2;</span
+            >
+            <span v-else class="icon iconfont icon-download_plugin"
+              >&#xe9c2;</span
+            >
+          </a-col>
+        </a-row>
+      </template>
+      <div v-html="selectedPlugin?.detailContent"></div>
+    </a-drawer>
   </div>
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue'
+import { defineProps, nextTick, ref } from 'vue'
 import ProgressBar from '@/components/ProgressBar.vue'
 import { computed } from '@vue/reactivity'
 import { useStore } from '@/store'
+import api from '@/utils/api'
+import MarkdownIt from 'markdown-it'
 
 defineProps({
   title: {
     type: String,
-    default: ''
+    default: '',
   },
   dataList: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   isShowHandler: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 // 插件列表排序
-const sortOptions = [{
+const sortOptions = [
+  {
     value: 1,
-    label: '最受欢迎'
-  },{
+    label: '最受欢迎',
+  },
+  {
     value: 2,
-    label: '评分最高'
-  },{
+    label: '评分最高',
+  },
+  {
     value: 3,
-    label: '最新发布'
-  },{
+    label: '最新发布',
+  },
+  {
     value: 4,
-    label: '最新更新'
-  }]
+    label: '最新更新',
+  },
+]
 const activeSort = ref(sortOptions[0])
 function handleMenuClick(option) {
   activeSort.value = option
@@ -102,26 +151,63 @@ function handleMenuClick(option) {
 // 选择插件
 const visible = ref(false)
 const selectedPlugin = ref(null)
+const markdown = new MarkdownIt()
+
 function selectPlugin(plugin) {
   selectedPlugin.value = plugin
+  if (plugin.homePage) {
+    api
+      .getPluginDetail(plugin.homePage)
+      .then((res) => {
+        selectedPlugin.value.detailContent = markdown.render(res || '暂无内容')
+      })
+      .catch((err) => {
+        selectedPlugin.value.detailContent = markdown.render(err || '暂无内容')
+      })
+  }
+
   visible.value = true
 }
-// function onClose() {
-//   visible.value = false
-//   // selectedPlugin.value = null
-// }
-
-// 添加插件
-const currentDownloadPlugin = ref(null)
-function addPlugin(plugin) {
-  window.market.downloadPlugin(plugin)
-  currentDownloadPlugin.value = plugin
+function onClosePluginDetail() {
+  visible.value = false
 }
 
-// 本地已下载插件
-const { state } = useStore()
+// 添加插件
+const { state, getLocalPlugin } = useStore()
 const localPluginsMap = computed(() => state.localPluginsMap)
 
+function addPlugin(plugin) {
+  try {
+    plugin.err = false
+    plugin.isLoading = true
+    plugin.downloadPrecent = 0
+    plugin.downloadPrecentSpped = 0.01
+    // 开启动画
+    changePrecentAnimation(plugin)
+    // 开始下载插件
+    window.market.downloadPlugin(plugin).then(async () => {
+      await getLocalPlugin()
+      plugin.downloadPrecent = 1
+      nextTick(() => {
+        clearInterval(plugin.timer)
+        plugin.isLoading = false
+      })
+    })
+  } catch (err) {
+    plugin.err = true
+  }
+}
+
+function changePrecentAnimation(plugin) {
+  plugin.timer = setInterval(() => {
+    if (plugin.downloadPrecent >= 0.95) {
+      clearInterval(plugin.timer)
+    } else if (plugin.downloadPrecent >= 0.8) {
+      plugin.downloadPrecentSpped = 0.005
+    }
+    plugin.downloadPrecent += plugin.downloadPrecentSpped
+  }, 60)
+}
 </script>
 
 <style lang="less" scoped>
@@ -138,16 +224,16 @@ const localPluginsMap = computed(() => state.localPluginsMap)
     text-overflow: ellipsis;
     width: 100%;
   }
-  :deep(.ant-list-item){
+  :deep(.ant-list-item) {
     display: flex !important;
-    .icon-download_plugin {
-      font-size: 18px;
-      color: rgb(46, 129, 230);
-      cursor: pointer;
-    }
   }
   .plugin-info {
     position: absolute;
   }
+}
+.icon-download_plugin {
+  font-size: 18px;
+  color: rgb(46, 129, 230);
+  cursor: pointer;
 }
 </style>

@@ -34,11 +34,11 @@ let pluginInstance: PluginHandler
     }
   },
   async downloadPlugin(plugin) {
-    pluginInstance
+    return pluginInstance
       .installPlugin([plugin.name], {
         isDev: commonConst.dev(),
       })
-      .then((res) => {
+      .then(() => {
         if (plugin.isDev) {
           const pluginPath = getLocalPluginPath(plugin.name)
           const pluginInfo = JSON.parse(
@@ -49,8 +49,6 @@ let pluginInstance: PluginHandler
             ...pluginInfo,
           }
         }
-        console.log('addPLugin >>>>> ', plugin)
-
         myGlobal.LOCAL_PLUGIINS.addPlugin(plugin)
         return myGlobal.LOCAL_PLUGIINS.PLUGINS
       })

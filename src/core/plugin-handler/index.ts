@@ -26,12 +26,15 @@ class PluginHandler {
       return null
     }
   }
-  installPlugin(pluginNameArr: string[], options: { isDev: boolean }) {
+  installPlugin(
+    pluginNameArr: string[],
+    options: { isDev: boolean }
+  ): Promise<any> {
     const cmd = options.isDev ? 'link' : 'install'
     return this.execCommand(cmd, pluginNameArr)
     // 执行命令安装
   }
-  execCommand(cmd: string, modules: string[]) {
+  execCommand(cmd: string, modules: string[]): Promise<any> {
     return new Promise((resolve, reject) => {
       let args: string[] = [cmd].concat(modules).concat('--save')
       if (cmd !== 'uninstall') {
@@ -42,24 +45,27 @@ class PluginHandler {
         cwd: this.pluginDir,
       })
 
-      // let output = ''
-      // npm.stdout
-      //   ?.on('data', (data: string) => {
-      //     output += data // 获取输出日志
-      //   })
-      //   .pipe(process.stdout)
+      let output = ''
+      npm.stdout &&
+        npm.stdout
+          .on('data', (data) => {
+            output += data
+          })
+          .pipe(process.stdout)
 
-      // npm.stderr
-      //   ?.on('data', (data: string) => {
-      //     output += data // 获取报错日志
-      //   })
-      //   .pipe(process.stderr)
+      npm.stderr &&
+        npm.stderr
+          .on('data', (data: string) => {
+            output += data // 获取报错日志
+            console.log('install plugin data >>>>>', data.toString())
+          })
+          .pipe(process.stderr)
 
       npm.on('close', (code: number) => {
         if (!code) {
-          resolve({ code: 0, data: '添加成功' })
+          resolve({ code: 0, data: output })
         } else {
-          reject({ code, data: '添加失败' })
+          reject({ code, data: output })
         }
       })
     })

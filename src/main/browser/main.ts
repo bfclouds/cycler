@@ -12,8 +12,8 @@ export default () => {
     mainWIndow = new BrowserWindow({
       width: 800,
       height: 60,
-      frame: false,
-      resizable: false,
+      // frame: false,
+      // resizable: false,
       useContentSize: true,
       opacity: 0.98,
       webPreferences: {
@@ -23,9 +23,9 @@ export default () => {
     })
     if (process.env.WEBPACK_DEV_SERVER_URL) {
       mainWIndow.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-      // mainWIndow.webContents.openDevTools({
-      //   mode: 'right',
-      // })
+      mainWIndow.webContents.openDevTools({
+        mode: 'right',
+      })
     } else {
       createProtocol('app')
       mainWIndow.loadFile(`app://./index.html`)

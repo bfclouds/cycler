@@ -62,13 +62,31 @@ export default () => {
       window.setBounds({ width: 800, height: 760 })
       view.setBounds({ width: 800, height: 700, x: 0, y: 60 })
       view.setAutoResize({
-        width: true,
-        height: true,
+        // width: true,
+        // height: true,
       })
       window.webContents.executeJavaScript(
         `window.pluginLoaded(${JSON.stringify(plugin)})`
       )
     })
+
+    // 解决跨域问题
+    window.webContents.session.webRequest.onBeforeSendHeaders(
+      (details, callback) => {
+        callback({ requestHeaders: { Origin: '*', ...details.requestHeaders } })
+      }
+    )
+    view.webContents.session.webRequest.onHeadersReceived(
+      (details, callback) => {
+        callback({
+          responseHeaders: {
+            'Access-Control-Allow-Origin': ['*'],
+            ...details.responseHeaders,
+          },
+        })
+      }
+    )
+
     renderView = view
   }
   function removeView(window: BrowserWindow, callBack?: () => void) {
