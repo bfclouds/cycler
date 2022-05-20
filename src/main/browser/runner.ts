@@ -19,8 +19,8 @@ const getPreloadPath = (plugin: AdapterInfo, pluginIndexPath: string) => {
   const { name, preload, tplPath, indexPath } = plugin
   if (!preload) return
   if (commonConst.dev()) {
-    if (name === 'rubick-system-feature') {
-      console.log('是rubick-system-feature')
+    if (name === 'system-feature') {
+      console.log('是system-feature')
       return path.resolve(__static, `../feature/public/preload.js`)
     }
     return getRelativePath(
@@ -32,7 +32,7 @@ const getPreloadPath = (plugin: AdapterInfo, pluginIndexPath: string) => {
 export default () => {
   let renderView: BrowserView | null = null
 
-  function createView(plugin: AdapterInfo, window: BrowserWindow) {
+  async function createView(plugin: AdapterInfo, window: BrowserWindow) {
     if (renderView !== null) {
       return
     }
@@ -56,14 +56,15 @@ export default () => {
         session: ses,
       },
     })
+    // ;(await import('@electron/remote/main')).enable(view.webContents)
     window.setBrowserView(view)
     view.webContents.loadFile(pluginIndexPath as string)
     view.webContents.once('dom-ready', () => {
       window.setBounds({ width: 800, height: 760 })
       view.setBounds({ width: 800, height: 700, x: 0, y: 60 })
       view.setAutoResize({
-        // width: true,
-        // height: true,
+        width: !process.env.NODE_ENV_DEV_ELECTRON,
+        height: !process.env.NODE_ENV_DEV_ELECTRON,
       })
       window.webContents.executeJavaScript(
         `window.pluginLoaded(${JSON.stringify(plugin)})`

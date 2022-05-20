@@ -26,12 +26,12 @@ class App {
     }
   }
 
-  beforeReady() {
+  async beforeReady() {
     console.log('beforeReady >>>>>')
+    ;(await import('@electron/remote/main')).initialize()
   }
 
-  onReady() {
-    console.log('onReady >>>>>')
+  async onReady() {
     const onReadyFn = () => {
       // 初始化ui
       this.windowCreator.init()

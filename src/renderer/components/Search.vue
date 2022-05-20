@@ -12,34 +12,53 @@
       placeholder="嘿，输入点啥~"
     >
       <template #suffix>
-        <div class="suffix-tool">logo</div>
+        <div class="suffix-tool">
+          <img
+            v-if="currentPlugin?.logo"
+            class="logo"
+            :src="currentPlugin.logo"
+            alt=""
+          />
+          <img
+            v-else
+            class="logo"
+            :src="menuPlugin?.logo"
+            alt="插件市场"
+            @click="$emit('openMenu')"
+          />
+        </div>
       </template>
     </a-input>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { withDefaults, defineProps, defineEmits, watch } from 'vue'
-  import { HtmlInputEvent, AdapterInfo } from '@/types/type'
+import { withDefaults, defineProps, defineEmits } from 'vue'
+import { HtmlInputEvent, AdapterInfo } from '@/types/type'
 
-  interface PropsType {
-    currentPlugin: AdapterInfo|null
-    searchValue: string
+interface PropsType {
+  currentPlugin: AdapterInfo | null
+  searchValue: string
+  menuPlugin: AdapterInfo | null
+}
+const props = withDefaults(defineProps<PropsType>(), {
+  currentPlugin: null,
+  searchValue: '',
+  selectedOpionPlugin: undefined,
+})
+const emit = defineEmits(['onSearch', 'unloadPlugin', 'openMenu'])
+function onInputValue(event: HtmlInputEvent) {
+  emit('onSearch', event.target.value)
+}
+function onKeyDown(event: KeyboardEvent) {
+  // 删除键
+  if (
+    (event.key === 'Backspace' || event.keyCode === 8) &&
+    props.searchValue.length === 0
+  ) {
+    emit('unloadPlugin')
   }
-  const props = withDefaults(defineProps<PropsType>(), {
-    currentPlugin: null,
-    searchValue: '',
-  })
-  const emit = defineEmits(['onSearch', 'unloadPlugin'])
-  function onInputValue(event: HtmlInputEvent) {
-    emit('onSearch', event.target.value)
-  }
-  function onKeyDown(event:KeyboardEvent) {
-    // 删除键
-    if ((event.key === 'Backspace' || event.keyCode === 8) && props.searchValue.length === 0) {
-      emit('unloadPlugin')
-    }
-  }
+}
 </script>
 
 <style lang="less">
@@ -81,6 +100,13 @@
   .ant-input:focus {
     border: none;
     box-shadow: none;
+  }
+  .suffix-tool {
+    img {
+      width: 40px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
   }
 }
 </style>

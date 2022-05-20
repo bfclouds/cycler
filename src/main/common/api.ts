@@ -2,11 +2,12 @@ import { BrowserWindow, ipcMain } from 'electron'
 import { AdapterInfo } from '@/types/type'
 import runner from '@/main/browser/runner'
 import safeParse from '@/common/utils/jsonParse'
+import { Global } from '@/types/type'
 
 interface APIType {
   [key: string]: any
   currentPlugin: AdapterInfo | null
-  loadPlugin: (plugin: AdapterInfo, window: BrowserWindow) => void
+  loadPlugin: (pluginName: string, window: BrowserWindow) => void
   openPlugin: (plugin: AdapterInfo, window: BrowserWindow) => void
   unloadPlugin: (params: any, window: BrowserWindow) => void
   setWindowHeight: (params: { height: number }, window: BrowserWindow) => void
@@ -19,7 +20,13 @@ export const API: APIType = {
   setCurrentPlugin(plugin: AdapterInfo) {
     API.currentPlugin = plugin
   },
-  loadPlugin(plugin, window) {
+  loadPlugin(pluginName, window) {
+    const plugin = (
+      global as unknown as Global
+    ).LOCAL_PLUGIINS.getLocalPlugins().find((p) => p.name === pluginName)
+    if (!plugin) {
+      return Promise.reject()
+    }
     API.setCurrentPlugin(plugin)
     // 卸载之前的plugin
     runnerInstance.removeView(window)

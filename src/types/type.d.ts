@@ -2,6 +2,7 @@
 
 export type Global = {
   LOCAL_PLUGIINS: LocalPlugins
+  PATH: Path
 }
 
 type PluginType = 'system' | 'app'
@@ -15,12 +16,18 @@ export interface MyPlugin {
   features?: Features[]
 }
 
+export type Path = {
+  appPath: string
+  pluginInstallDir: string
+}
+
 export type LocalPlugins = {
   [key: string]: any
   plugins: AdapterInfo[]
   getLocalPlugins: () => AdapterInfo[]
   addPlugin: (plugin: AdapterInfo) => void
   downloadPlugin: (plugin: AdapterInfo) => Promise<any>
+  removePlugin: (options: { pluginName: string }) => Promise<any>
 }
 export interface HtmlInputEvent extends Event {
   target: HTMLInputElement

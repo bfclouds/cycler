@@ -3,8 +3,10 @@
     <SearchVue
       :searchValue="searchValue"
       :currentPlugin="currentPlugin"
+      :menuPlugin="menuPlugin"
       @onSearch="onSearch"
       @unloadPlugin="unloadPlugin"
+      @openMenu="openMenu"
     ></SearchVue>
     <ResultVue
       :options="searchOptions"
@@ -18,8 +20,9 @@
 import SearchVue from './components/Search.vue'
 import ResultVue from './components/Result.vue'
 import renderPluginManager from './plugins-manager'
-import { nextTick, watch } from 'vue'
+import { nextTick, onMounted, toRaw, ref, watch } from 'vue'
 import { ipcRenderer } from 'electron'
+import { AdapterInfo } from '@/types/type'
 
 const {
   searchValue,
@@ -28,11 +31,11 @@ const {
 
   currentPlugin,
   selectPlugin,
-  unloadPlugin
+  unloadPlugin,
+  getPluginInfo,
 } = renderPluginManager()
-
 watch([searchOptions], () => {
-  if(currentPlugin.value?.name) {
+  if (currentPlugin.value?.name) {
     return
   }
   nextTick(() => {
@@ -43,7 +46,24 @@ watch([searchOptions], () => {
   })
 })
 
-
+const selectedOpionPlugin = ref()
+const menuPlugin = ref<AdapterInfo | null>(null)
+onMounted(async () => {
+  menuPlugin.value = getPluginInfo(
+    '系统菜单',
+    // eslint-disable-next-line no-undef
+    `${__static}/feature/package.json`
+  )
+})
+function openMenu() {
+  if (!menuPlugin.value) {
+    return
+  }
+  selectPlugin({
+    ...toRaw(menuPlugin.value),
+    cmd: '插件市场',
+  })
+}
 </script>
 
 <style lang="less">

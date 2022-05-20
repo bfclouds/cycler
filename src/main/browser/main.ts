@@ -2,18 +2,20 @@ import { BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 
 export default () => {
-  let mainWIndow: BrowserWindow
+  let mainWindow: BrowserWindow
 
   function init() {
     createWindow()
   }
 
-  function createWindow() {
-    mainWIndow = new BrowserWindow({
+  async function createWindow() {
+    console.log('环境变量》〉》〉', process.env.NODE_ENV_DEV_ELECTRON)
+
+    mainWindow = new BrowserWindow({
       width: 800,
       height: 60,
-      // frame: false,
-      // resizable: false,
+      frame: process.env.NODE_ENV_DEV_ELECTRON as unknown as boolean,
+      resizable: process.env.NODE_ENV_DEV_ELECTRON as unknown as boolean,
       useContentSize: true,
       opacity: 0.98,
       webPreferences: {
@@ -22,18 +24,23 @@ export default () => {
       },
     })
     if (process.env.WEBPACK_DEV_SERVER_URL) {
-      mainWIndow.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-      mainWIndow.webContents.openDevTools({
-        mode: 'right',
-      })
+      mainWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+      if (process.env.NODE_ENV_DEV_ELECTRON) {
+        mainWindow.webContents.openDevTools({
+          mode: 'right',
+        })
+      }
     } else {
       createProtocol('app')
-      mainWIndow.loadFile(`app://./index.html`)
+      mainWindow.loadFile(`app://./index.html`)
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-extra-semi
+    ;(await import('@electron/remote/main')).enable(mainWindow.webContents)
   }
 
   function getMainWindow() {
-    return mainWIndow
+    return mainWindow
   }
 
   return {

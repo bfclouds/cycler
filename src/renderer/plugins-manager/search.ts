@@ -1,9 +1,13 @@
-import { ipcRenderer, IpcRenderer } from 'electron'
+import { ipcRenderer } from 'electron'
 import throttle from 'lodash.throttle'
-import { reactive, toRefs, watch } from 'vue'
+import { reactive, Ref, toRefs, watch } from 'vue'
 import { AdapterInfo, SearchOptions } from '@/types/type'
 
-export default () => {
+export default ({
+  currentPlugin,
+}: {
+  currentPlugin: Ref<AdapterInfo | null>
+}) => {
   const state = reactive<{
     searchValue: string
     searchOptions: SearchOptions[]
@@ -28,6 +32,11 @@ export default () => {
     // 获取插件列表,将搜索结果赋值给options
     if (!value) {
       state.searchOptions = []
+      return
+    }
+    console.log(currentPlugin.value)
+
+    if (currentPlugin.value) {
       return
     }
 

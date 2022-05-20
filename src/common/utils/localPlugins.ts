@@ -53,14 +53,23 @@ let pluginInstance: PluginHandler
         return myGlobal.LOCAL_PLUGIINS.PLUGINS
       })
   },
+  removePlugin({ pluginName }) {
+    console.log('unisntall plugin name???>>>>', pluginName)
+
+    return pluginInstance
+      .uninstallPlugin([pluginName], {
+        isDev: commonConst.dev(),
+      })
+      .then(() => {
+        myGlobal.LOCAL_PLUGIINS.deletePlugin(pluginName)
+      })
+  },
   addPlugin(plugin) {
     const plugins = myGlobal.LOCAL_PLUGIINS.getLocalPlugins()
     const pluginIsExist = plugins.some((p) => p.name === plugin.name)
     if (pluginIsExist) {
       return
     }
-    console.log('addPLugin222 >>>>> ', typeof plugin)
-
     if (!pluginIsExist) {
       plugins.unshift(plugin)
       myGlobal.LOCAL_PLUGIINS.plugins = plugins
@@ -69,10 +78,21 @@ let pluginInstance: PluginHandler
       fs.writeFileSync(configPath, JSON.stringify(plugins))
     }
   },
+  deletePlugin(pluginName: string) {
+    const plugins = myGlobal.LOCAL_PLUGIINS.getLocalPlugins()
+    const index = plugins.findIndex((p) => p.name === pluginName)
+    console.log(index, JSON.parse(JSON.stringify(plugins)))
+    if (index !== -1) {
+      plugins.splice(index, 1)
+      fs.writeFileSync(configPath, JSON.stringify(plugins))
+    }
+  },
 }
 
 const myGlobalLocalPlugins = myGlobal.LOCAL_PLUGIINS
 ipcMain.handle('LOCAL_PLUGINS', (event, name, params) => {
+  console.log('local_plugins fn name >>>>', name)
+
   if (!myGlobalLocalPlugins[name]) {
     return
   }

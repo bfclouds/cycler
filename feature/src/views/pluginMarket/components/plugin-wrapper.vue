@@ -35,7 +35,7 @@
               <span
                 v-else-if="!localPluginsMap[item.name]"
                 class="icon iconfont icon-download_plugin"
-                @click.stop="addPlugin(item)"
+                @click.stop="installPlugin(item)"
                 >&#xe9c2;</span
               >
             </template>
@@ -74,7 +74,8 @@
         <span
           style="font-size: 16px; cursor: pointer"
           @click="onClosePluginDetail"
-          >【 临时关闭按钮 】</span>
+          >【 临时关闭按钮 】</span
+        >
       </template>
       <template #title>
         <a-row type="flex" justify="space-between">
@@ -82,16 +83,21 @@
           <a-col>
             <ProgressBar
               v-if="selectedPlugin.isLoading"
+              :color="selectedPlugin.isDownload ? '#1d8c01' : '#790000'"
               :percent="selectedPlugin.downloadPrecent"
             ></ProgressBar>
             <span
               v-else-if="!localPluginsMap[selectedPlugin.name]"
               class="icon iconfont icon-download_plugin"
-              @click.stop="addPlugin(selectedPlugin)"
+              @click.stop="installPlugin(selectedPlugin)"
               >&#xe9c2;</span
             >
-            <span v-else class="icon iconfont icon-download_plugin"
-              >&#xe9c2;</span
+            <span
+              v-else
+              class="icon iconfont"
+              style="cursor: pointer; font-size: 18px; font-weight: 700"
+              @click="uninstallPlugin(selectedPlugin)"
+              >&#xe602;</span
             >
           </a-col>
         </a-row>
@@ -176,26 +182,51 @@ function onClosePluginDetail() {
 const { state, getLocalPlugin } = useStore()
 const localPluginsMap = computed(() => state.localPluginsMap)
 
-function addPlugin(plugin) {
+function pluginCommonHandler(plugin, isDownload) {
+  plugin.err = false
+  plugin.isLoading = true
+  plugin.downloadPrecent = 0
+  plugin.downloadPrecentSpped = 0.01
+  plugin.isDownload = isDownload
+  // 开启动画
+  changePrecentAnimation(plugin)
+}
+
+function installPlugin(plugin) {
   try {
-    plugin.err = false
-    plugin.isLoading = true
-    plugin.downloadPrecent = 0
-    plugin.downloadPrecentSpped = 0.01
-    // 开启动画
-    changePrecentAnimation(plugin)
+    pluginCommonHandler(plugin, true)
     // 开始下载插件
-    window.market.downloadPlugin(plugin).then(async () => {
+    window.market
+      .downloadPlugin(plugin)
+      .then(async () => {
+        await getLocalPlugin()
+        plugin.downloadPrecent = 1
+      })
+      .finally(() => {
+        nextTick(() => {
+          clearInterval(plugin.timer)
+          plugin.isLoading = false
+        })
+      })
+  } catch (err) {
+    plugin.err = true
+  }
+}
+// 卸载插件
+function uninstallPlugin(plugin) {
+  pluginCommonHandler(plugin, false)
+  window.market
+    .removePlugin(plugin.name)
+    .then(async () => {
       await getLocalPlugin()
       plugin.downloadPrecent = 1
+    })
+    .finally(() => {
       nextTick(() => {
         clearInterval(plugin.timer)
         plugin.isLoading = false
       })
     })
-  } catch (err) {
-    plugin.err = true
-  }
 }
 
 function changePrecentAnimation(plugin) {

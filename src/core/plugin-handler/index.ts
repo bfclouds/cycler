@@ -34,6 +34,15 @@ class PluginHandler {
     return this.execCommand(cmd, pluginNameArr)
     // 执行命令安装
   }
+  uninstallPlugin(
+    pluginNameArr: string[],
+    options: { isDev: boolean }
+  ): Promise<any> {
+    console.log('进入了uninstallPlugin')
+
+    const cmd = options.isDev ? 'unlink' : 'uninstall'
+    return this.execCommand(cmd, pluginNameArr)
+  }
   execCommand(cmd: string, modules: string[]): Promise<any> {
     return new Promise((resolve, reject) => {
       let args: string[] = [cmd].concat(modules).concat('--save')

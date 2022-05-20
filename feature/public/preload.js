@@ -8,6 +8,13 @@ window.market = {
       JSON.stringify(plugin)
     )
   },
+  removePlugin(pluginName) {
+    return ipcRenderer.invoke(
+      'LOCAL_PLUGINS',
+      'removePlugin',
+      JSON.stringify({ pluginName })
+    )
+  },
   getLocalPlugins() {
     return ipcRenderer.invoke(
       'LOCAL_PLUGINS',
