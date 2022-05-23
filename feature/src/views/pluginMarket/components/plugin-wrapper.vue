@@ -65,16 +65,9 @@
       <template #closeIcon>
         <span
           class="icon iconfont"
-          style="font-size: 16px"
+          style="font-size: 16px; color: #000"
           @click="onClosePluginDetail"
           >&#xe601;</span
-        >
-      </template>
-      <template #extra>
-        <span
-          style="font-size: 16px; cursor: pointer"
-          @click="onClosePluginDetail"
-          >【 临时关闭按钮 】</span
         >
       </template>
       <template #title>
