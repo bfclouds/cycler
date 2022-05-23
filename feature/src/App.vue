@@ -58,7 +58,7 @@ onMounted(() => {
   -moz-osx-font-smoothing: grayscale;
   // text-align: center;
   user-select: none;
-  overflow: hidden;
+  // overflow: hidden;
   #nav {
     .iconfont {
       display: inline-block;
@@ -82,5 +82,8 @@ onMounted(() => {
     // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background-color: rgb(170, 169, 169);
   }
+}
+* {
+  box-sizing: border-box;
 }
 </style>
