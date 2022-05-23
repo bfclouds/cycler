@@ -52,7 +52,7 @@
   </div>
 </template>
 <script setup>
-import total from '@/assets/api/total.json'
+// import total from '@/assets/api/total.json'
 import { onMounted, ref } from 'vue'
 import { useStore } from '@/store'
 import { computed } from '@vue/reactivity'
@@ -60,10 +60,10 @@ import { computed } from '@vue/reactivity'
 const { state } = useStore()
 
 const dataList = computed(() => {
-  // const map = state.localPluginsMap
-  // const keys = Object.keys(map)
-  // return keys.map((key) => map[key])
-  return total
+  const map = state.localPluginsMap
+  const keys = Object.keys(map)
+  return keys.map((key) => map[key])
+  // return total
 })
 const activePlugin = ref(null)
 onMounted(() => {
