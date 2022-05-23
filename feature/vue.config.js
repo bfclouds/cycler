@@ -1,7 +1,7 @@
 const path = require('path')
 
-function resolveDir(dir){
-  return path.join(__dirname,dir)
+function resolveDir(dir) {
+  return path.join(__dirname, dir)
 }
 
 
@@ -16,9 +16,10 @@ module.exports = {
   chainWebpack: config => {
     config.resolve.alias
       .set('assets', resolveDir('./src/assets'))
-    },
+  },
   outputDir: path.join(__dirname, '../public/feature'),
   publicPath: process.env.NODE_ENV === 'production' ? '' : '/',
+  lintOnSave: false,
   devServer: {
     open: false,
     host: '0.0.0.0',

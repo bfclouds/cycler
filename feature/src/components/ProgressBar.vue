@@ -15,7 +15,7 @@
     />
     <circle
       class="progress-bar"
-      :style="{stroke: color}"
+      :style="{ stroke: color }"
       cx="50"
       cy="50"
       r="50"
@@ -39,8 +39,8 @@ const props = defineProps({
   },
   color: {
     type: String,
-    default: '#1d8c01'
-  }
+    default: '#1d8c01',
+  },
 })
 const dashArray = ref(Math.PI * 100)
 const dashOffset = computed(() => (1 - props.percent) * dashArray.value)
@@ -58,6 +58,7 @@ circle {
   &.progress-bar {
     transform: scale(0.9);
     transform-origin: center;
+    color: rgb(121, 0, 0);
   }
 }
 </style>

@@ -1,4 +1,6 @@
-const { ipcRenderer } = require('electron')
+const {
+  ipcRenderer
+} = require('electron')
 
 window.market = {
   downloadPlugin(plugin) {
@@ -12,7 +14,9 @@ window.market = {
     return ipcRenderer.invoke(
       'LOCAL_PLUGINS',
       'removePlugin',
-      JSON.stringify({ pluginName })
+      JSON.stringify({
+        pluginName
+      })
     )
   },
   getLocalPlugins() {
@@ -20,5 +24,5 @@ window.market = {
       'LOCAL_PLUGINS',
       'getLocalPlugins',
     )
-  }
+  },
 }

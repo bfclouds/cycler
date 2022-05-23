@@ -56,15 +56,14 @@ export default () => {
         session: ses,
       },
     })
-    // ;(await import('@electron/remote/main')).enable(view.webContents)
     window.setBrowserView(view)
     view.webContents.loadFile(pluginIndexPath as string)
     view.webContents.once('dom-ready', () => {
       window.setBounds({ width: 800, height: 760 })
       view.setBounds({ width: 800, height: 700, x: 0, y: 60 })
       view.setAutoResize({
-        width: !process.env.NODE_ENV_DEV_ELECTRON,
-        height: !process.env.NODE_ENV_DEV_ELECTRON,
+        width: process.env.NODE_ENV_DEV_ELECTRON !== 'false',
+        height: process.env.NODE_ENV_DEV_ELECTRON !== 'false',
       })
       window.webContents.executeJavaScript(
         `window.pluginLoaded(${JSON.stringify(plugin)})`

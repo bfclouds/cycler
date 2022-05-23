@@ -9,13 +9,17 @@ export default () => {
   }
 
   async function createWindow() {
-    console.log('环境变量》〉》〉', process.env.NODE_ENV_DEV_ELECTRON)
+    console.log(
+      '环境变量》〉》〉',
+      process.env.NODE_ENV_DEV_ELECTRON,
+      typeof process.env.NODE_ENV_DEV_ELECTRON
+    )
 
     mainWindow = new BrowserWindow({
       width: 800,
       height: 60,
-      frame: process.env.NODE_ENV_DEV_ELECTRON as unknown as boolean,
-      resizable: process.env.NODE_ENV_DEV_ELECTRON as unknown as boolean,
+      frame: process.env.NODE_ENV_DEV_ELECTRON === 'false',
+      resizable: process.env.NODE_ENV_DEV_ELECTRON === 'false',
       useContentSize: true,
       opacity: 0.98,
       webPreferences: {
@@ -25,7 +29,7 @@ export default () => {
     })
     if (process.env.WEBPACK_DEV_SERVER_URL) {
       mainWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-      if (process.env.NODE_ENV_DEV_ELECTRON) {
+      if (process.env.NODE_ENV_DEV_ELECTRON === 'false') {
         mainWindow.webContents.openDevTools({
           mode: 'right',
         })
