@@ -9,9 +9,9 @@
     border: none;
   }
   :deep(.ant-menu) {
-    background: #F3EFEF;
+    background: #f3efef;
     .ant-menu-item-selected {
-      background-color: #E2E2E2;
+      background-color: #e2e2e2;
       color: #141414;
       &:after {
         display: none;
@@ -22,4 +22,27 @@
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.set-card {
+  :deep(.ant-card .ant-card-head) {
+    min-height: 32px;
+    border-bottom: none;
+    .ant-card-head-title {
+      padding-top: 0px;
+      padding-bottom: 20px;
+    }
+  }
+  :deep(.ant-card .ant-card-body) {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  :deep(.ant-divider-horizontal) {
+    margin: 10px 0 20px;
+  }
+}
+
+.align-center {
+  display: flex;
+  align-items: center;
 }
