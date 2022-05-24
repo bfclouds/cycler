@@ -1,3 +1,8 @@
+
+### 视频效果
+
+点击[哔哩哔哩](https://www.bilibili.com/video/BV1B54y1d7jd/)去哔哩哔哩看插件运行效果
+
 ### 效果展示
 
 ![app](https://img-blog.csdnimg.cn/93782f29a13e421292bd35cf1c6f0382.png)
